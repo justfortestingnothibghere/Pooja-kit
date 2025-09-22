@@ -1,0 +1,31 @@
+/* Basic styles for Pooja Kit demo app */
+:root{--accent:#8b2d2d;--muted:#666}
+*{box-sizing:border-box}
+body{font-family:Inter,system-ui,Arial,sans-serif;margin:0;background:#f5f5f6;color:#222}
+.site-header{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;background:#fff;border-bottom:1px solid #eee}
+.brand{display:flex;gap:12px;align-items:center}
+.logo{width:56px;height:56px;border-radius:8px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+.nav{display:flex;gap:8px;align-items:center}
+.container{max-width:1100px;margin:18px auto;display:grid;grid-template-columns:1fr 320px;gap:18px;padding:0 12px}
+.card{background:#fff;padding:14px;border-radius:10px;box-shadow:0 6px 18px rgba(20,20,30,0.04)}
+.productsGrid{display:grid;grid-template-columns:repeat(1,1fr);gap:12px}
+.product{display:flex;gap:12px;align-items:center;border-radius:8px;padding:8px;border:1px solid #fafafa}
+.product img{width:100px;height:100px;object-fit:cover;border-radius:8px}
+.muted{color:var(--muted);font-size:13px}
+.row{display:flex;gap:8px}
+input,textarea,select,button{font-family:inherit}
+input,textarea{padding:10px;border-radius:8px;border:1px solid #e6e6e6;width:100%}
+textarea{resize:vertical}
+.btn{background:var(--accent);color:#fff;padding:8px 12px;border-radius:8px;border:none;cursor:pointer}
+.btn.ghost{background:#fff;color:var(--accent);border:1px solid #eee}
+.spacer{flex:1}
+.sidebar{}
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{padding:8px;text-align:left;border-bottom:1px solid #f1f1f1}
+.footer{padding:12px;text-align:center;color:var(--muted);font-size:13px}
+
+/* responsive */
+@media (max-width:900px){
+  .container{grid-template-columns:1fr; padding:12px}
+  .productsGrid{grid-template-columns:1fr}
+}
