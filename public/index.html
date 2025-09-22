@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pooja Kit — Ready To Use Kits</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand"><div class="logo">PK</div><div><h1>Pooja Kit</h1><div class="muted">All India Delivery • @Pooja.kit.in</div></div></div>
+    <nav class="nav">
+      <button id="btnShop">Shop</button>
+      <button id="btnTrack">Track</button>
+      <button id="btnAdmin">Admin</button>
+      <div class="spacer"></div>
+      <div id="authArea"></div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section id="shopSection" class="card">
+      <h2>Shop — Kits</h2>
+      <div id="products" class="productsGrid"></div>
+    </section>
+
+    <section id="checkoutSection" class="card" style="display:none">
+      <h2>Checkout</h2>
+      <form id="checkoutForm">
+        <div class="row"><input name="name" placeholder="Full name" required /><input name="phone" placeholder="Phone" required /></div>
+        <textarea name="address" placeholder="Delivery address" required></textarea>
+        <div class="row"><input name="city" placeholder="City" /><input name="pin" placeholder="Pin / ZIP" /></div>
+        <div class="row"><div>Estimated delivery: <span id="etaText">—</span></div><div class="spacer"></div><button type="button" id="placeOrderBtn" class="btn">Place order</button></div>
+      </form>
+    </section>
+
+    <section id="trackSection" class="card" style="display:none">
+      <h2>Track Order</h2>
+      <div class="row"><input id="trackingInput" placeholder="Enter tracking id, e.g. ORD-ABCDE12" /><button id="trackBtn" class="btn">Lookup</button></div>
+      <div id="trackResult" style="margin-top:12px"></div>
+    </section>
+
+    <aside class="sidebar">
+      <div class="card">
+        <h3>Cart</h3>
+        <div id="cartItems">No items yet</div>
+        <div style="margin-top:8px"><button id="goCheckoutBtn" class="btn">Checkout</button><button id="clearCartBtn" class="btn ghost">Clear</button></div>
+      </div>
+      <div class="card" style="margin-top:12px">
+        <h3>Account</h3>
+        <div id="accountArea"></div>
+      </div>
+      <div class="card" style="margin-top:12px">
+        <h3>Admin</h3>
+        <button id="openAdminBtn" class="btn">Open Admin Panel</button>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="footer">© Pooja Kit • All India Delivery</footer>
+  <script src="/js/app.js"></script>
+</body>
+</html>

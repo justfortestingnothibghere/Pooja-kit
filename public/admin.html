@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin — Pooja Kit</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Admin Dashboard</h1>
+    <div id="loginArea" class="card">
+      <h3>Admin Login</h3>
+      <input id="adminEmail" placeholder="Email" value="armanhacker900@gmail.com" />
+      <input id="adminPass" placeholder="Password" type="password" value="" />
+      <div style="margin-top:8px"><button id="adminLoginBtn" class="btn">Login</button></div>
+    </div>
+
+    <div id="adminPanel" style="display:none">
+      <div class="card">
+        <h3>Orders</h3>
+        <table class="table" id="ordersTable"><thead><tr><th>Tracking</th><th>Name</th><th>Items</th><th>ETA</th><th>Status</th><th>Actions</th></tr></thead><tbody></tbody></table>
+        <div style="margin-top:8px"><button id="exportBtn" class="btn ghost">Export JSON</button></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Admin front-end: will call login via /api/login and then fetch admin endpoints
+    async function ajax(url, method='GET', body=null) {
+      const opts = {method, credentials: 'include', headers:{}};
+      if (body) { opts.headers['Content-Type']='application/json'; opts.body = JSON.stringify(body); }
+      const r = await fetch(url, opts);
+      return r.json();
+    }
+
+    document.getElementById('adminLoginBtn').addEventListener('click', async ()=>{
+      const email = document.getElementById('adminEmail').value;
+      const password = document.getElementById('adminPass').value;
+      const res = await ajax('/api/login','POST',{email,password});
+      if (res.error) return alert(res.error);
+      // show admin panel
+      document.getElementById('loginArea').style.display='none';
+      document.getElementById('adminPanel').style.display='block';
+      loadOrders();
+    });
+
+    async function loadOrders(){
+      const res = await fetch('/api/admin/orders', {credentials:'include'});
+      if (res.status === 401 || res.status === 403) { alert('Not authorized. Login as admin.'); return; }
+      const rows = await res.json();
+      const tbody = document.querySelector('#ordersTable tbody');
+      tbody.innerHTML='';
+      rows.forEach(o=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${o.id}</td><td>${o.name}<div class="muted">${o.phone} • ${o.city}</div></td><td>${JSON.parse(o.items).map(i=>i.title).join('<br>')}</td><td>${o.eta ? new Date(o.eta).toDateString() : '-'}</td><td>${o.status}</td><td><button data-id="${o.id}" class="shipBtn">Ship</button> <button data-id="${o.id}" class="deliverBtn">Deliver</button></td>`;
+        tbody.appendChild(tr);
+      });
+      document.querySelectorAll('.shipBtn').forEach(b=>b.addEventListener('click', async (e)=>{
+        const id = e.target.getAttribute('data-id');
+        await fetch(`/api/admin/order/${id}/status`, {method:'PUT', credentials:'include', headers:{'Content-Type':'application/json'}, body: JSON.stringify({status:'shipped'})});
+        loadOrders();
+      }));
+      document.querySelectorAll('.deliverBtn').forEach(b=>b.addEventListener('click', async (e)=>{
+        const id = e.target.getAttribute('data-id');
+        await fetch(`/api/admin/order/${id}/status`, {method:'PUT', credentials:'include', headers:{'Content-Type':'application/json'}, body: JSON.stringify({status:'delivered'})});
+        loadOrders();
+      }));
+    }
+
+    document.getElementById('exportBtn').addEventListener('click', ()=>{
+      window.location = '/api/admin/export';
+    });
+  </script>
+</body>
+</html>
